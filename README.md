@@ -1,11 +1,8 @@
 # Github Search React
 
-The main purpose of this repository is to show a working Node.js API Server with super fast caching from Redis in TypeScript.
+The main purpose of this repository is to show a working React web app loading from super fast cached apis from the network and handling state changes.
 
-**Live Demo**: [https://github-search-api.nidinpereira.com/](https://github-search-api.nidinpereira.com/)
-
-**Api Docs**: [https://app.swaggerhub.com/apis/npereira-jc/github-search](https://app.swaggerhub.com/apis/npereira-jc/github-search)
-
+**Live Demo**: [https://github-search.nidinpereira.com/](https://github-search.nidinpereira.com/)
 
 # Table of contents:
 
@@ -22,58 +19,19 @@ The main purpose of this repository is to show a working Node.js API Server with
 # Pre-reqs
 To build and run this app locally you will need a few things:
 - Install [Node.js](https://nodejs.org/en/)
-- Install [Redis](https://redis.io/download)
 - Install [VS Code](https://code.visualstudio.com/) or [Intellij](https://www.jetbrains.com/idea/)
 
 # Getting started
 - Clone the repository
 ```
-git clone --depth=1 https://github.com/nidinpereira/github-search-typescrip-nodejs-redis.git <project_name>
+git clone --depth=1 https://github.com/nidinpereira/github-search-typescript-react-redux.git <project_name>
 ```
 - Install dependencies
 ```
 cd <project_name>
 npm install
 ```
-- Configure your redis server
-```bash
-# install redis
-sudo apt update
-sudo apt install redis-server
-# edit the config
-sudo nano /etc/redis/redis.conf
 
-# inside redis.conf change the variable supervised to have value systemd 
-
-# If you run Redis from upstart or systemd, Redis can interact with your
-# supervision tree. Options:
-#   supervised no      - no supervision interaction
-#   supervised upstart - signal upstart by putting Redis into SIGSTOP mode
-#   supervised systemd - signal systemd by writing READY=1 to $NOTIFY_SOCKET
-#   supervised auto    - detect upstart or systemd method based on
-#                        UPSTART_JOB or NOTIFY_SOCKET environment variables
-# Note: these supervision methods only signal "process is ready."
-#       They do not enable continuous liveness pings back to your supervisor.
-supervised systemd
-
-
-
-# For Mac os
-# install HomeBrew.
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-# If you already have a copy of Homebrew installed, update it by using:
-brew update
-# With an up-to-date version of Homebrew, install Redis by using the command:
-brew install redis
-
-```
-- Start your redis server (you'll probably want another command prompt)
-```bash
-sudo systemctl restart redis.service
-
-# on macOS
-brew services start redis
-```
 - Build and run the project
 ```
 npm run build
@@ -84,7 +42,7 @@ Or, if you're using VS Code, you can use `cmd + shift + b` to run the default bu
 Finally, navigate to `http://localhost:8000` and you should able to see on your console that the server is up and running!
 
 # Deploying the app
-There are many ways to deploy a Node app, and in general, nothing about the deployment process changes because you're using TypeScript.
+There are many ways to deploy a react app, and in general, copy all content from the build directory into your public cdn folder.
 
 ### Build the app
 Building the app locally is required to generate a zip to deploy because the App Service won't execute build tasks.
@@ -110,17 +68,22 @@ The full folder structure of this app is explained below:
 | **build*                 | Contains the distributable (or output) from your TypeScript build. This is the code you ship  |
 | **node_modules**         | Contains all your npm dependencies                                                            |
 | **src**                  | Contains your source code that will be compiled to the dist dir                               |
+| **src/__mocks__**        | mock data for jest mock functions.                                                            |
+| **src/api**              | code to handle api calls using axios.                                                         |
+| **src/components**       | all the ui components of your app.                                                            |
 | **src/config**           | All your apps secrets and configurations are stored here.                                     |
-| **src/models**           | Models and interfaces that will serve as schemas for api calls or database schemas            |
-| **src/utils**            | Utility classes that server as common classes shared across modules                           |
-| **src/middlewares**      | Middleware functions that are processed before or after the request is served                 |
-| **src/modules**          | All the api modules of the server will be included here.                                      |
-| **src/modules/<module_name>/<module>.controller.ts** | Controllers are responsible for handling the http requests and fetching data from different services.                                      |
-| **src/modules/<module_name>/<module>.service.ts** | Service classes are responsible for fetching data from external services like a DB or other http sources.                                      |
+| **src/enums**            | Enumerations for different types of data objects                                              |
+| **src/models**           | Models and interfaces that will serve as schemas for api models                               |
+| **src/helpers**          | Utility classes that server as common classes shared across modules                           |
+| **src/interfaces**       | interfaces that hold the object structure of the different data models                        |
+| **src/pages**            | All the different pages of the app.                                                           |
+| **src/pages/<page_name>/<page>.page.tsx** | the functional components of each page.                                      |
+| **src/pages/<page_name>/<page>.page.scss** | the style files for each page.                                              |
+| **src/redux**            | All the different pages of the app.                                                           |
+| **src/scss**             | Global styles.                                                           |
 | **test**                 | Contains your tests. Separate from source because there is a different build process.         |
 | .env.example             | API keys, tokens, passwords, database URI. Clone this, but don't check it in to public repos. |
-| .travis.yml              | Used to configure Travis CI build                                                             |
-| Docker                   | Used for containerization of the build                                                             |
+| App.tsx                  | starting componenet of the app                                                             |
 | jest.config.js           | Used to configure Jest running tests written in TypeScript                                    |
 | package.json             | File that contains npm dependencies as well as [build scripts]                       |
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
@@ -188,22 +151,10 @@ Below is a list of all the scripts this template has available:
 
 | Npm Script | Description  |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
-| `build-ts`                | Compiles all source `.ts` files to `.js` files in the `dist` folder                               |
-| `build`                   | Full build. Runs ALL build tasks (`build-sass`, `build-ts`, `lint`, `copy-static-assets`)         |
-| `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
-| `debug`                   | Performs a full build and then serves the app in watch mode                                       |
-| `lint`                    | Runs ESLint on project files                                                                      |
-| `serve-debug`             | Runs the app with the --inspect flag                                                              |
-| `serve`                   | Runs node on `dist/server.js` which is the apps entry point                                       |
-| `start`                   | Does the same as 'npm run serve'. Can be invoked with `npm start`                                 |
+| `build`                   | Full build. Runs ALL build tasks (`build-sass`, `build-ts`)         |
+| `start`                   | starts a build using react-scripts                                 |
 | `test`                    | Runs tests using Jest test runner                                                                 |
-| `test:e2e`                | Runs end to end tests using Jest test runner                                                      |
 | `test:cov`                | generate coverage report using Jest test runner                                                                 |
-| `watch-debug`             | The same as `watch` but includes the --inspect flag so you can attach a debugger                  |
-| `watch-node`              | Runs node with nodemon so the process restarts if it crashes. Used in the main watch task         |
-| `watch-test`              | Runs tests in watch mode                                                                          |
-| `watch-ts`                | Same as `build-ts` but continuously watches `.ts` files and re-compiles when needed               |
-| `watch`                   | Runs all watch tasks (TypeScript, Sass, Node). Use this if you're not touching static assets.     |
 
 ### Using the debugger in VS Code
 Debugging is one of the places where VS Code really shines over other editors.
@@ -332,38 +283,4 @@ npm run lint    // runs only ESLint
 # Dependencies
 Dependencies are managed through `package.json`.
 In that file you'll find two sections:
-
-## `dependencies`
-
-| Package                         | Description                                                           |
-| ------------------------------- | --------------------------------------------------------------------- |
-| async                           | Utility library that provides asynchronous control flow.               |
-| body-parser                     | Express 4 middleware.                                                 |
-| class-transformer               | Library to transform plain objects to classes and vice versa.                                                 |
-| class-validator                 | Validation library that uses annotations.                                                 |
-| compression                     | Express 4 middleware.                                                 |
-| connect-mongo                   | MongoDB session store for Express.                                    |
-| dotenv                          | Loads environment variables from .env file.                            |
-| errorhandler                    | Express 4 middleware.                                                 |
-| express                         | Node.js web framework.                                                |
-| express-validator               | Easy form validation for Express.                                     |
-| request                         | Simplified HTTP request library.                                       |
-| routing-controllers             | Routing library that works along side express and annotations for routing and controllers            |
-| winston                         | Logging library                                                       |
-
-## `devDependencies`
-
-| Package                         | Description                                                            |
-| ------------------------------- | ---------------------------------------------------------------------- |
-| @types                          | Dependencies in this folder are `.d.ts` files used to provide types    |
-| chai                            | Testing utility library that makes it easier to write tests            |
-| concurrently                    | Utility that manages multiple concurrent tasks. Used with npm scripts  |
-| jest                            | Testing library for JavaScript.                                        |
-| nodemon                         | Utility that automatically restarts node process when it crashes       |
-| supertest                       | HTTP assertion library.                                                |
-| ts-jest                         | A preprocessor with sourcemap support to help use TypeScript with Jest.|
-| ts-node                         | Enables directly running TS files. Used to run `copy-static-assets.ts` |
-| eslint                          | Linter for JavaScript and TypeScript files                             |
-| typescript                      | JavaScript compiler/type checker that boosts JavaScript productivity   |
-
 To install or update these dependencies you can use `npm install` or `npm update`.
