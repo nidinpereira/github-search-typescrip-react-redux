@@ -1,0 +1,50 @@
+@import 'src/scss/_abstract';
+
+.cardImage {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.cardBtn {
+  color: #929292;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid rgba(117, 117, 117, 0.2);
+  background: transparent;
+}
+
+.cardBtn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cardContent {
+  padding: 1rem;
+}
+
+.cardTitle {
+  color: #6e6e6e;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  margin: 0;
+}

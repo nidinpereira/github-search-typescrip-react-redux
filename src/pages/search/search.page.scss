@@ -1,0 +1,23 @@
+@import 'src/scss/_abstract';
+
+.search-container {
+  margin: 15% auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .search-container {
+    @extend .display-flex-start-center;
+    flex-direction: row;
+  }
+
+  .search-list {
+    margin-top: 5px;
+    width: 100%;
+  }
+}
+
+.no-result {
+  height: 500px;;
+}

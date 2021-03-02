@@ -1,0 +1,37 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.row{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cardList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.cardsItem {
+    display: flex;
+    padding: 1rem;
+}
+
+@media (min-width: 30rem) {
+    .cardsItem {
+        width: 50%;
+    }
+}
+
+@media (min-width: 40rem) {
+    .cardsItem {
+        width: 33.3333%;
+    }
+}
